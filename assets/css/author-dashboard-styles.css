@@ -1,0 +1,288 @@
+.stats h2,
+.stats section h2,
+.stats_charts h2 {
+	margin-bottom: 1em!important;
+}
+.article_stats{
+    
+
+}
+.article_stats {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	list-style: none;
+	padding: 0;
+	margin-left: 0!important;
+	margin-bottom: 55px;
+}
+
+.article_stats li {
+	background:#EEF0EF;
+	border: 1px solid #E2E2E2;
+	display: inline-block;
+	font-family: 'Tienne Bold', serif;
+	text-align: left;
+	min-width: 143px;
+	padding:1.5em 1em 0;
+	flex-basis: calc(50% - 6px);
+	margin-bottom: 12px;
+}
+
+@media (min-width: 768px) and (max-width: 1120px) {
+	.article_stats {
+		justify-content: flex-start;
+	}
+	.article_stats li {
+		flex-basis: calc(33% - 7px);
+		margin-right: 12px;
+	}
+	.article_stats li:nth-child(3n) {
+		margin-right: 0;
+	}
+}
+@media (min-width: 1120px) {
+	.article_stats {
+		justify-content: flex-start;
+	}
+	.article_stats li {
+		flex-basis: calc(20% - 12px);
+		margin-right: 12px;
+	}
+}
+.article_stats li .stats_icon{
+	background-color: #ffffff;
+	border-radius: 32px;
+	padding: 0.5em 0.7em;
+}
+.article_stats li img{
+	width: 17px;
+	height: auto;
+}
+
+.article_stats li .number {
+	font-size: 43px;
+	line-height: 43px;
+	margin-top: 0.3em;
+	margin-bottom: 0;
+}
+
+
+.article_stats li .label {
+	font-family: "Open Sans";
+	font-size: 15px;
+	line-height: 22px;
+	color: #6D6D6D;
+	margin-bottom: 1em;
+}
+.article_stats li br {
+  display: none;
+}
+.stats_charts{
+	margin-bottom: 55px;
+}
+
+.author-intros .stats_charts{
+	margin-top: 45px;
+	width: 848px;
+}
+
+#listing-description .stats_charts h2.kicker {
+	color: #c1262c;
+	font-size: 112%;
+}
+
+.graphic {
+	border: 1px solid #6D6D6D;
+	/*padding:1.5em;*/
+}
+
+.bar-list {
+	border: 1px solid #666;
+	padding: 15px 10px;
+}
+
+.bar-list ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.bar-list ul li {
+	margin-bottom: 5px;
+} 
+
+.bar-list ul li span.label {
+	position: absolute;
+	left: 8px;
+	top: 2px;
+	font-family: "Open Sans";
+	font-size: 15px;
+	line-height: 22px;
+	color: #606060;
+	margin-bottom: 0;
+	}
+
+.bar-list ul li span.data {
+	width: 100%;
+	font-family: "Open Sans";
+	font-size: 13px;
+	line-height: 22px;
+	color: #606060;
+	margin-bottom: 0;
+	background-color: #F7F7F7;
+	position: relative;
+	}
+
+.tablestyle .bar-list ul li span.label {
+	width: 74%;
+	position: relative;
+} 
+
+.tablestyle .bar-list ul li span.data {
+	width: 24%;
+} 
+
+.tablestyle .bar-list ul li span.data {
+	line-height: 2.51em;
+	padding-right: 10px;
+	text-align: right;
+} 
+
+.bar-list ul li span.bar {
+	height: 30px;
+	background-color: #DBDBDB;
+	}
+
+.bar-list ul li span.percentage {
+	position: absolute;
+	right: 8px;
+	top: 2px;
+	font-size: 11px;
+	padding: 2px;
+}
+
+.bar-list ul li span {
+	display: inline-block;
+	vertical-align: middle;	
+}
+
+#view-tweets {
+	margin-bottom: 0px !important;
+}
+
+#listing-description .author_list_stats, #listing-description .author_list_stats li {
+	margin: 0;
+	padding: 0px;
+}
+
+#listing-description .author_list_stats li {
+	min-height: 0;
+}
+
+.author_list_stats li .stats_icon{
+	background-color: #ffffff;
+	border-radius: 32px;
+	padding: 4px 3px 4px 8px;
+	border: 1px solid #CCCCCC;
+	margin-right: 10px;
+}
+
+.author_list_stats img {
+	width: 14px;
+	height: auto;
+}
+
+.author_list_stats .number, .author_list_stats .label {
+	font-family: "Open Sans Regular", Helvetica, Arial, sans-serif;
+	color: #5e5f5f;
+	font-size: 12px;
+}
+
+.author_list_stats a:link,.author_list_stats a:visited, .author_list_stats a:active {
+	border-bottom: 2px solid #FCDD55;
+}
+.author_list_stats a:hover {
+	background: #FCDD55;
+}
+
+#blog-post.stats_page {
+	width: auto;
+}
+
+#blog-post.stats_page #body-copy {
+    padding-right: 40px;
+    padding-left: 180px;
+    position: relative;
+}
+
+#blog-post.stats_page .stats {
+	margin-left: -170px;
+}
+
+#blog-post.stats_page #blog-sidebar {
+	width: 200px;
+	float: right;
+	position: relative;
+	z-index: 8;
+}
+
+#blog-post.stats_page #blog-sidebar #most-recent-posts {
+	display: none;
+}
+
+.stats-link {
+	border-bottom: 2px solid #FCDD55;
+}
+
+.author_list_stats a.ununderlined:link  {
+	border-bottom: none;
+}
+
+.author_list_stats a.ununderlined:hover  {
+	background: none;
+}
+
+
+.twitter-tweet-rendered {
+	width: 100% !important;
+}
+
+.EmbeddedTweet {
+	max-width: 100% !important;
+}
+
+@media (min-width: 1120px) {
+	.stats {
+		width: 850px;
+		margin-left: -283px;
+		margin-top: 2em;
+	}
+}
+@media (max-width: 768px) {
+	#feature #body-copy {
+		padding-right: 0 !important;
+	}
+	#tweets-block {
+		margin: 0 0 24px;
+	}
+}
+@media (max-width: 480px) {
+	.stats_page #article-detail-columns #body-copy {
+		padding: 0 !important;
+	}
+	.title-container {
+		padding: 24px 12px 0;
+	}
+	.stats,
+	.stats_charts {
+		padding: 0 12px;
+		float: none;
+	}
+	.stats .stats_charts {
+		padding: 0;
+	}
+	#tweets-block {
+		margin: 0 12px 24px;
+	}
+}
