@@ -96,7 +96,7 @@ function store_facebook_data( $all_facebook_data ) {
 	foreach ( $all_facebook_data as $facebook_data ) {
 		update_post_meta(
 			$facebook_data['post_id'],
-			'facebook_data',
+			'autd_facebook_data',
 			$facebook_data['share_count']
 		);
 	}

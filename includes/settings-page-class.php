@@ -25,20 +25,20 @@ class Posts_GA_Settings_Page {
 	function create_settings_page() {
 		// Google Analytics settings.
 
-		$view_id     = get_option( 'view_id' );
-		$tracking_id = get_option( 'tracking_id' );
-		$notice      = get_transient( 'user_message_event' );
+		$view_id     = get_option( 'autd_view_id' );
+		$tracking_id = get_option( 'autd_tracking_id' );
+		$notice      = get_transient( 'autd_user_message_event' );
 		if ( $notice ) {
 			echo $notice;
 		}
 		// TODO: FINISH THIS.
 		// Facebook API settings.
-		$facebook_app_id     = get_option( 'facebook_app_id' );
-		$facebook_app_secret = get_option( 'facebook_app_secret' );
+		$facebook_app_id     = get_option( 'autd_facebook_app_id' );
+		$facebook_app_secret = get_option( 'autd_facebook_app_secret' );
 
 		if ( ! empty( $facebook_app_id ) && ! empty( $facebook_app_secret ) ) {
 			set_option(
-				'facebook_access_token',
+				'autd_facebook_access_token',
 				$facebook_app_id . '|' . $facebook_app_secret
 			);
 		}

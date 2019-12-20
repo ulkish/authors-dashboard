@@ -40,10 +40,10 @@ function get_and_store_page_views( $cron = false, $posts_slugs = false, $post_id
 				$republished_report = get_republished_report( $analytics );
 
 				$responses          = array(
-					'monthly_page_views_report'  => $monthly_page_views_report,
-					'total_page_views_report'  => $total_page_views_report,
-					'audience_report'    => $audience_report,
-					'republished_report' => $republished_report,
+					'monthly_page_views_report' => $monthly_page_views_report,
+					'total_page_views_report'   => $total_page_views_report,
+					'audience_report'           => $audience_report,
+					'republished_report'        => $republished_report,
 				);
 				store_page_views( $responses, $post_id );
 			}

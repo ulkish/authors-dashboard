@@ -48,7 +48,7 @@ class Post_Views_Column {
 	// Displays column content.
 	function create_views_column_content( string $column_name, int $post_ID ) {
 		if ( 'post_views' === $column_name ) {
-			$page_views = get_post_meta( $post_ID, 'pageViews' );
+			$page_views = get_post_meta( $post_ID, 'autd_page_views' );
 			if ( ! empty( $page_views ) ) {
 				echo esc_textarea( $page_views[0] );
 			} else {
@@ -58,17 +58,17 @@ class Post_Views_Column {
 	}
 
 	function set_sortable_columns( array $columns ) : array {
-		$columns['post_views'] = 'pageViews';
+		$columns['post_views'] = 'autd_page_views';
 		return $columns;
 	}
 
 	function manage_wp_posts_be_qe_pre_get_posts( $query ) {
 	   if ( $query->is_main_query() && ( $orderby = $query->get( 'orderby' ) ) ) {
 			switch( $orderby ) {
-				// If we're ordering by 'pageViews'.
-				case 'pageViews':
+				// If we're ordering by 'autd_page_views'.
+				case 'autd_page_views':
 					// Set our query's meta_key, which is used for custom fields.
-					$query->set( 'meta_key', 'pageViews' );
+					$query->set( 'meta_key', 'autd_page_views' );
 					// Sort by numeric order.
 					$query->set( 'orderby', 'meta_value_num' );
 					break;

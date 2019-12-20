@@ -19,8 +19,10 @@ $client->setRedirectUri(
 	plugin_dir_url( '' ) . 'authors-dashboard/oauth2callback.php'
 );
 $client->addScope( Google_Service_Analytics::ANALYTICS_READONLY );
-$client->setApprovalPrompt( 'force' ); // Necessary to get a refresh token.
-$client->setAccessType( 'offline' ); // Necessary to get a refresh token.
+// Necessary to get a refresh token.
+$client->setApprovalPrompt( 'force' );
+// Same as above.
+$client->setAccessType( 'offline' );
 // If we're NOT receiving 'code' containing the access token, redirect to auth.
 if ( ! isset( $_GET['code'] ) ) {
 	$auth_url = $client->createAuthUrl();
@@ -30,7 +32,7 @@ if ( ! isset( $_GET['code'] ) ) {
 	// contains a REFRESH token that we will use to get new ACCESS tokens.
 	$client->authenticate( $_GET['code'] );
 	$token = $client->getAccessToken();
-	update_option( 'access_token', $token );
+	update_option( 'autd_access_token', $token );
 	$redirect_uri = admin_url() . 'options-general.php?page=authors_dashboard_page';
 	wp_redirect( $redirect_uri );
 }

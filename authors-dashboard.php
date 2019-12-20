@@ -71,9 +71,9 @@ function authors_dashboard_get_google_ids() {
 			// Sanitizing and storing View ID and Tracking ID.
 			$view_id     = sanitize_text_field( wp_unslash( $_POST['view_id'] ) );
 			$tracking_id = sanitize_text_field( wp_unslash( $_POST['tracking_id'] ) );
-			update_option( 'view_id', $view_id );
-			update_option( 'tracking_id', $tracking_id );
-			if ( empty( get_option( 'access_token' ) ) ) {
+			update_option( 'autd_view_id', $view_id );
+			update_option( 'autd_tracking_id', $tracking_id );
+			if ( empty( get_option( 'autd_access_token' ) ) ) {
 				$redirect_uri = plugin_dir_url( __FILE__ ) . 'oauth2callback.php';
 				wp_redirect( $redirect_uri );
 			}
@@ -91,13 +91,13 @@ function gtag_javascript() {
 	?>
 		<!-- Global site tag (gtag.js) - Google Analytics -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=
-		<?php echo get_option( 'tracking_id' ); ?>">
+		<?php echo get_option( 'autd_tracking_id' ); ?>">
 		</script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
 			function gtag(){dataLayer.push(arguments);}
 			gtag('js', new Date());
-			gtag('config', '<?php echo get_option( 'tracking_id' ); ?>' );
+			gtag('config', '<?php echo get_option( 'autd_tracking_id' ); ?>' );
 		</script>
 	<?php
 }
@@ -184,22 +184,22 @@ function stats_endpoint_template_include( $template ) {
 			// Displaying Google Analytics data.
 			// Check if we're inside the main loop in a single post page.
 			if ( is_single() && in_the_loop() && is_main_query() ) {
-				$page_views 	  = get_post_meta( $post_id, 'ga_page_views_post', true );
-				$last_updated 	  = get_post_meta( $post_id, 'total_views_last_update', true );
+				$page_views       = get_post_meta( $post_id, 'autd_ga_page_views_post', true );
+				$last_updated     = get_post_meta( $post_id, 'autd_total_views_last_update', true );
 				$five_minutes_ago = strtotime( '-15 minutes', time() );
-				
+
 				if ( empty( $page_views['page_views_array'] ) || ( $last_updated <= $five_minutes_ago ) ) {
-					get_and_store_page_views(false, false, $post_id );
-					$page_views = get_post_meta( $post_id, 'ga_page_views_post', true );
+					get_and_store_page_views( false, false, $post_id );
+					$page_views = get_post_meta( $post_id, 'autd_ga_page_views_post', true );
 				}
-				$facebook_data = get_transient( 'facebook_data_post_' . $post_id );
+				$facebook_data = get_transient( 'autd_facebook_data_post_' . $post_id );
 				if ( empty( $facebook_data ) ) {
 					$facebook_data = get_facebook_data( get_permalink( $post_id ), $app_credentials );
-					set_transient( 'facebook_data_post_' . $post_id, $facebook_data, 300 );
-					$facebook_data = get_transient( 'facebook_data_post_' . $post_id );
+					set_transient( 'autd_facebook_data_post_' . $post_id, $facebook_data, 300 );
+					$facebook_data = get_transient( 'autd_facebook_data_post_' . $post_id );
 				}
 
-				$tweet_count = get_post_meta( get_post()->ID, 'tweet_count' );
+				$tweet_count = get_post_meta( get_post()->ID, 'autd_tweet_count' );
 				if ( isset( $page_views ) || isset( $tweet_count ) || isset( $facebook_data ) ) {
 					$plugin_dir_url = plugin_dir_url( __FILE__ );
 
@@ -220,7 +220,7 @@ function stats_endpoint_template_include( $template ) {
 					$content .= get_languages_chart( $page_views );
 					$content .= get_republish_table( $page_views );
 					$content .= get_tweets( $tweet_count, $post_id );
-					
+
 					return $content;
 				}
 			}
