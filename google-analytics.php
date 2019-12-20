@@ -39,7 +39,7 @@ function get_and_store_page_views( $cron = false, $posts_slugs = false, $post_id
 				$audience_report    = get_audience_report( $analytics );
 				$republished_report = get_republished_report( $analytics );
 
-				$responses          = array(
+				$responses = array(
 					'monthly_page_views_report' => $monthly_page_views_report,
 					'total_page_views_report'   => $total_page_views_report,
 					'audience_report'           => $audience_report,
@@ -80,7 +80,7 @@ function get_client() {
 	$client->setApprovalPrompt( 'force' ); // Necessary to get a refresh token.
 	// If the user has already authorized this app then get an access token
 	// else redirect to ask the user to authorize access to Google Analytics.
-	$access_token = get_option( 'access_token' );
+	$access_token = get_option( 'autd_access_token' );
 	if ( ! empty( $access_token ) ) {
 		// If the access token has expired, fetch a new one.
 		if ( $client->isAccessTokenExpired() ) {
@@ -109,7 +109,7 @@ function get_audience_report( $analytics ) {
 	$post_url = str_replace( '/stats', '', $_SERVER['REQUEST_URI'] );
 
 	// Using following View IDs for testing: 196032391  199522412.
-	$view_id = get_option( 'view_id' );
+	$view_id = get_option( 'autd_view_id' );
 
 	// Creating the DateRange object from 2016 to today.
 	$since_creation_date_range = new Google_Service_AnalyticsReporting_DateRange();
@@ -202,7 +202,7 @@ function get_monthly_page_views_report( $analytics ) {
 	$post_url = str_replace( '/stats', '', $_SERVER['REQUEST_URI'] );
 
 	// Using following View IDs for testing: 196032391  199522412.
-	$view_id = get_option( 'view_id' );
+	$view_id = get_option( 'autd_view_id' );
 
 	// Creating the DateRange object from a month ago to today.
 	$month_date_range = new Google_Service_AnalyticsReporting_DateRange();
@@ -249,7 +249,7 @@ function get_total_page_views_report( $analytics ) {
 	$post_url = str_replace( '/stats', '', $_SERVER['REQUEST_URI'] );
 
 	// Using following View IDs for testing: 196032391  199522412.
-	$view_id = get_option( 'view_id' );
+	$view_id = get_option( 'autd_view_id' );
 
 	// Creating the DateRange object from 2016 to today.
 	$since_creation_date_range = new Google_Service_AnalyticsReporting_DateRange();
@@ -297,7 +297,7 @@ function get_total_page_views_report( $analytics ) {
  */
 function get_author_posts_report( $analytics ) {
 	// Using following View IDs for testing: 196032391  199522412.
-	$view_id = get_option( 'view_id' );
+	$view_id = get_option( 'autd_view_id' );
 	
 	// Creating the DateRange object from 2016 to today.
 	$since_creation_date_range = new Google_Service_AnalyticsReporting_DateRange();
@@ -353,7 +353,7 @@ function get_republished_report( $analytics ) {
 	$post_url = str_replace( '/stats', '', $_SERVER['REQUEST_URI'] );
 
 	// Using following View IDs for testing: 196032391  199522412.
-	$view_id = get_option( 'view_id' );
+	$view_id = get_option( 'autd_view_id' );
 
 	// Creating the DateRange object from 2016 to today.
 	$since_creation_date_range = new Google_Service_AnalyticsReporting_DateRange();
@@ -440,8 +440,8 @@ function store_page_views( $responses, $post_id ) {
 		'republish_array'       => $republish_data['republish_array'],
 		'republish_total_views' => $republish_data['republish_total_views'],
 	);
-	update_post_meta( $post_id, 'ga_page_views_post', $page_views );
-	update_post_meta( $post_id, 'total_views_last_update', time() );
+	update_post_meta( $post_id, 'autd_ga_page_views_post', $page_views );
+	update_post_meta( $post_id, 'autd_total_views_last_update', time() );
 }
 
 
@@ -477,7 +477,7 @@ function sort_by_year_and_month( $results_array ) {
 function get_cron_report( $analytics ) {
 
 	// Using following View IDs for testing: 196032391  199522412.
-	$view_id = get_option( 'view_id' );
+	$view_id = get_option( 'autd_view_id' );
 
 	// Creating the DateRange object from 2016 to today.
 	$since_creation_date_range = new Google_Service_AnalyticsReporting_DateRange();
@@ -529,12 +529,12 @@ function get_updateable_posts_urls( $data = false ) {
 		'meta_query'       => array(
 			'relation' => 'OR',
 			array(
-				'key'     => 'total_views_last_update',
+				'key'     => 'autd_total_views_last_update',
 				'compare' => 'NOT EXISTS',
 				'value'   => '', // This is ignored, but is necessary.
 			),
 			array(
-				'key'     => 'total_views_last_update',
+				'key'     => 'autd_total_views_last_update',
 				'value'   => $hour_ago_timestamp,
 				'compare' => '<',
 			),
@@ -570,7 +570,7 @@ function store_cron_page_views( $response ) {
 		$url           = $row['dimensions'][0];
 		$total_views   = $row['metrics'][0]['values'][0];
 		$now_timestamp = time();
-		$ga_page_views_post = get_post_meta( $post_id, 'ga_page_views_post', true );
+		$ga_page_views_post = get_post_meta( $post_id, 'autd_ga_page_views_post', true );
 		$page_views         = array(
 			'page_views_array'      => $ga_page_views_post['page_views_array'],
 			'genders_array'         => $ga_page_views_post['genders_array'],
@@ -583,8 +583,8 @@ function store_cron_page_views( $response ) {
 			'republish_total_views' => $ga_page_views_post['republish_total_views'],
 		);
 
-		update_post_meta( $post_id, 'ga_page_views_post', $page_views );
-		update_post_meta( $post_id, 'total_views_last_update', $now_timestamp );
+		update_post_meta( $post_id, 'autd_ga_page_views_post', $page_views );
+		update_post_meta( $post_id, 'autd_total_views_last_update', $now_timestamp );
 	}
 }
 
