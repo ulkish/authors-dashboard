@@ -37,7 +37,7 @@ function get_article_stats($page_views, $facebook_data, $tweet_count, $post_id) 
 						</li>';
 					}
 
-					$republish = get_post_meta( $post_id, 'autd_rc_republish_content', true );
+					$republish = get_post_meta( $post_id, 'rc_republish_content', true );
 					if ( 'no-republish' !== $republish ) {
 						$republish_total_views = (!empty($page_views['republish_total_views']) ) ? $page_views['republish_total_views'] : '0';
 	$result.=			'<li>
