@@ -587,4 +587,3 @@ function store_cron_page_views( $response ) {
 		update_post_meta( $post_id, 'autd_total_views_last_update', $now_timestamp );
 	}
 }
-

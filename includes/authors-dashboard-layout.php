@@ -37,7 +37,7 @@ function get_article_stats($page_views, $facebook_data, $tweet_count, $post_id) 
 						</li>';
 					}
 
-					$republish = get_post_meta( $post_id, 'rc_republish_content', true );
+					$republish = get_post_meta( $post_id, 'autd_rc_republish_content', true );
 					if ( 'no-republish' !== $republish ) {
 						$republish_total_views = (!empty($page_views['republish_total_views']) ) ? $page_views['republish_total_views'] : '0';
 	$result.=			'<li>
@@ -314,7 +314,7 @@ function get_tweets( $tweet_count, $post_id ){
 							<span class="">' . $tweet_count[0] . '</span>
 						</button>
 						<div id="tweets-list" style="display:none">';
-		$tweets_data = get_post_meta( $post_id, 'tweets_data' );
+		$tweets_data = get_post_meta( $post_id, 'autd_tweets_data' );
 		if ( ! empty( $tweets_data ) ) {
 			foreach ( $tweets_data[0] as $tweet_data ) {
 				$result.= get_tweet( $tweet_data );
@@ -441,7 +441,7 @@ add_action('init', 'author_disable_admin', 1);
 function get_total_views(&$post){
 	if (current_user_authored($post)){
 		$plugin_dir_url = plugin_dir_url( __FILE__ ).'../';
-		$page_views = get_post_meta( $post->ID, 'ga_page_views_post' );
+		$page_views = get_post_meta( $post->ID, 'autd_ga_page_views_post' );
 		$result = '<ul class="author_list_stats">';
 		$result.= 	'<li>
 						<a class="ununderlined" href="'. get_permalink($post) .'stats/">
