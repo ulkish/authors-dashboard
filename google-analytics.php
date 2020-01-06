@@ -1,7 +1,7 @@
 <?php
 /**
  * Main functionality of the Google Analytics section of the plugin lays here.
- * Will need to be refactored when the calls to GA start to be made from a
+ * Will need to be refactored if the calls to GA start to be made from a
  * private static server.
  *
  * @package Authors Dashboard

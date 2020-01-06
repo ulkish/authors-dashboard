@@ -370,8 +370,8 @@ add_action( 'template_redirect', 'author_login');
 function author_login(){
 	global $wp;
 	
-	$authorkey = $_GET['authorkey'];
-	if (!isset($authorkey) || empty($authorkey)){ return; }
+	$authorkey = isset($_GET['authorkey']) ? $_GET['authorkey'] : false;
+	if (!$authorkey || empty($authorkey)){ return; }
 	
 	if (author_get($authorkey) && !isset($_COOKIE['redirected'])){
 
