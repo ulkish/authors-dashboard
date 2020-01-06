@@ -24,14 +24,11 @@ class Posts_GA_Settings_Page {
 
 	function create_settings_page() {
 		// Google Analytics settings.
-
-		$view_id     = get_option( 'autd_view_id' );
-		$tracking_id = get_option( 'autd_tracking_id' );
-		$notice      = get_transient( 'autd_user_message_event' );
+		$view_id = get_option( 'autd_view_id' );
+		$notice  = get_transient( 'autd_user_message_event' );
 		if ( $notice ) {
 			echo $notice;
 		}
-		// TODO: FINISH THIS.
 		// Facebook API settings.
 		$facebook_app_id     = get_option( 'autd_facebook_app_id' );
 		$facebook_app_secret = get_option( 'autd_facebook_app_secret' );
@@ -47,9 +44,8 @@ class Posts_GA_Settings_Page {
 		<div class="wrap">
 			<h2>Post Views With Google Analytics</h2>
 			<p>Please create Google Analytics account <a href="https://analytics.google.com/">here</a>.
-				After creating a Property grab your Tracking Code and paste it below.<br> Then create a View and
-				do the same with your View ID. As a last step authorize our plugin to retrieve<br> and display
-				your Google Analytics data.</p>
+				Then create a View and paste your View ID below. As a last step authorize our plugin to retrieve<br>
+				and display your Google Analytics data.</p>
 			<form action="<?php echo admin_url( 'admin-post.php' ); ?>" method="POST">
 				<input type="hidden" name="action" value="get_google_ids">
 				<?php wp_nonce_field( 'get_google_ids', 'google_ids_nonce' ); ?>
@@ -61,15 +57,6 @@ class Posts_GA_Settings_Page {
 						<td>
 							<input type="text" name="view_id" id="view_id"
 							value="<?php echo $view_id ?>">
-						</td>
-					</tr>
-					<tr>
-						<th scope="row">
-							<label for="tracking_id">Tracking ID: </label>
-						</th>
-						<td>
-							<input type="text" name="tracking_id" id="tracking_id"
-							value="<?php echo $tracking_id; ?>">
 						</td>
 					</tr>
 				</table>

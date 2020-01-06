@@ -53,7 +53,7 @@ require_once __DIR__ . '/includes/authors-dashboard-layout.php';
 require_once __DIR__ . '/google-analytics.php';
 
 /**
- * Gets a Tracking ID and View ID from the user and uses it to
+ * Gets the View ID from the user and uses it to
  * authorize and execute main plugin function.
  *
  * @return void
@@ -67,12 +67,11 @@ function authors_dashboard_get_google_ids() {
 		exit;
 	} else {
 		// Check for field values and execute main function.
-		if ( ! empty( $_POST['view_id'] ) && ! empty( $_POST['tracking_id'] ) ) {
-			// Sanitizing and storing View ID and Tracking ID.
-			$view_id     = sanitize_text_field( wp_unslash( $_POST['view_id'] ) );
-			$tracking_id = sanitize_text_field( wp_unslash( $_POST['tracking_id'] ) );
+		if ( ! empty( $_POST['view_id'] ) ) {
+			// Sanitizing and storing the View ID.
+			$view_id = sanitize_text_field( wp_unslash( $_POST['view_id'] ) );
 			update_option( 'autd_view_id', $view_id );
-			update_option( 'autd_tracking_id', $tracking_id );
+
 			if ( empty( get_option( 'autd_access_token' ) ) ) {
 				$redirect_uri = plugin_dir_url( __FILE__ ) . 'oauth2callback.php';
 				wp_redirect( $redirect_uri );
@@ -81,28 +80,6 @@ function authors_dashboard_get_google_ids() {
 	}
 }
 add_action( 'admin_post_get_google_ids', 'authors_dashboard_get_google_ids' );
-
-/**
- * Adds gtag from Google Analytics to the site header.
- *
- * @return void
- */
-function gtag_javascript() {
-	?>
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=
-		<?php echo get_option( 'autd_tracking_id' ); ?>">
-		</script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
-			gtag('config', '<?php echo get_option( 'autd_tracking_id' ); ?>' );
-		</script>
-	<?php
-}
-add_action( 'wp_head', 'gtag_javascript' );
-
 
 /**
  * This function will run as soon as this plugin is activated, adding
