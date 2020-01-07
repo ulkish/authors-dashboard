@@ -48,9 +48,9 @@ class Post_Views_Column {
 	// Displays column content.
 	function create_views_column_content( string $column_name, int $post_ID ) {
 		if ( 'post_views' === $column_name ) {
-			$ga_page_views = get_post_meta( $post_ID, 'autd_ga_page_views_post', true );
+			$ga_page_views = get_post_meta( $post_ID, 'autd_total_views', true );
 			if ( ! empty( $ga_page_views ) ) {
-				echo esc_textarea( $ga_page_views['total_views'] );
+				echo esc_textarea( $ga_page_views );
 			} else {
 				echo '-';
 			}
@@ -58,17 +58,17 @@ class Post_Views_Column {
 	}
 
 	function set_sortable_columns( array $columns ) : array {
-		$columns['post_views'] = 'autd_ga_page_views_post';
+		$columns['post_views'] = 'autd_total_views';
 		return $columns;
 	}
 
 	function manage_wp_posts_be_qe_pre_get_posts( $query ) {
 		if ( $query->is_main_query() && ( $orderby = $query->get( 'orderby' ) ) ) {
 			switch ( $orderby ) {
-				// If we're ordering by 'autd_ga_page_views_post'.
-				case 'autd_ga_page_views_post':
+				// If we're ordering by 'autd_total_views'.
+				case 'autd_total_views':
 					// Set our query's meta_key, which is used for custom fields.
-					$query->set( 'meta_key', 'autd_ga_page_views_post' );
+					$query->set( 'meta_key', 'autd_total_views' );
 					// Sort by numeric order.
 					$query->set( 'orderby', 'meta_value_num' );
 					break;

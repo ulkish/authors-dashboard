@@ -141,9 +141,11 @@ function stats_endpoint_template_include( $template ) {
 	global $wp_query;
 	// Since the "stats" query variable does not require a value, we need to
 	// check for its existence.
-	if ( is_singular() && isset( $wp_query->query_vars['stats'] )) {
-		if (!current_user_authored(get_post())){
-			wp_safe_redirect(str_replace("stats/", "", esc_url_raw(add_query_arg([]))));
+	if ( is_singular() && isset( $wp_query->query_vars['stats'] ) ) {
+		if ( ! current_user_authored( get_post() ) ) {
+			wp_safe_redirect(
+				str_replace( 'stats/', '', esc_url_raw( add_query_arg( [] ) ) )
+			);
 			exit;
 		}
 		// Displaying Google Analytics data.

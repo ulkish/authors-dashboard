@@ -30,14 +30,14 @@ function get_and_store_page_views( $cron = false, $posts_slugs = false, $post_id
 				$response = get_cron_report( $analytics );
 				// Get results and store them in a transient.
 				store_cron_page_views( $response );
-			} elseif ( $posts_slugs != false ) {
+			} elseif ( false !== $posts_slugs ) {
 				$author_posts_report = get_author_posts_report( $analytics );
 				store_authors_page_views( $author_posts_report );
 			} else {
-				$monthly_page_views_report  = get_monthly_page_views_report( $analytics );
-				$total_page_views_report  = get_total_page_views_report( $analytics );
-				$audience_report    = get_audience_report( $analytics );
-				$republished_report = get_republished_report( $analytics );
+				$monthly_page_views_report = get_monthly_page_views_report( $analytics );
+				$total_page_views_report   = get_total_page_views_report( $analytics );
+				$audience_report           = get_audience_report( $analytics );
+				$republished_report        = get_republished_report( $analytics );
 
 				$responses = array(
 					'monthly_page_views_report' => $monthly_page_views_report,
@@ -320,7 +320,7 @@ function get_author_posts_report( $analytics ) {
 	$month_dimension->setName( 'ga:month' );
 
 	// Creating Dimension Filter.
-	$posts_slugs = get_posts_slugs_array();
+	$posts_slugs      = get_posts_slugs_array();
 	$dimention_filter = new Google_Service_AnalyticsReporting_SegmentDimensionFilter();
 	$dimention_filter->setDimensionName( 'ga:pagePath' );
 	$dimention_filter->setOperator( 'IN_LIST' );
@@ -428,20 +428,21 @@ function store_page_views( $responses, $post_id ) {
 	$total_views   = $responses['total_page_views_report']['reports'][0]['data']['totals'][0]['values'][0];
 	
 	// Storing all data in a transient.
-	$republish_data = get_republish_array($republished_report);
+	$republish_data = get_republish_array( $republished_report );
 	$page_views = array(
-		'page_views_array'      => get_data_array($monthly_page_views_report, 'page_views'),
-		'genders_array'         => get_data_array($gender_report, 'gender'),
-		'ages_array'            => get_data_array($age_report, 'age'),
+		'page_views_array'      => get_data_array( $monthly_page_views_report, 'page_views' ),
+		'genders_array'         => get_data_array( $gender_report, 'gender' ),
+		'ages_array'            => get_data_array( $age_report, 'age' ),
 		'total_views'           => $total_views,
 		'monthly_total'         => $monthly_total,
-		'countries_array'       => get_data_array($country_report, 'countries'),
-		'languages_array'       => get_data_array($language_report, 'languages'),
+		'countries_array'       => get_data_array( $country_report, 'countries' ),
+		'languages_array'       => get_data_array( $language_report, 'languages' ),
 		'republish_array'       => $republish_data['republish_array'],
 		'republish_total_views' => $republish_data['republish_total_views'],
 	);
 	update_post_meta( $post_id, 'autd_ga_page_views_post', $page_views );
 	update_post_meta( $post_id, 'autd_total_views_last_update', time() );
+	update_post_meta( $post_id, 'autd_total_views', $page_views['total_views'] );
 }
 
 
@@ -450,27 +451,31 @@ function store_authors_page_views( $response ) {
 	$historical_readers_report = $response['reports'][0]['data']['rows'];
 	foreach ( $historical_readers_report as $key => $row ) {
 		$historical_readers_report_pre_array[] = array(
-				'year'  => $row['dimensions'][1],
-				'month'   => $row['dimensions'][2],
-				'views' => $row['metrics'][0]['values'][0],
-			);
+			'year'  => $row['dimensions'][1],
+			'month' => $row['dimensions'][2],
+			'views' => $row['metrics'][0]['values'][0],
+		);
 	}
-	
+
 	$historical_readers_report_array = sort_by_year_and_month( $historical_readers_report_pre_array );
-	update_user_meta( $wp_query->get_queried_object_id(), 'ga_author_historical_views', $historical_readers_report_array);
+	update_user_meta(
+		$wp_query->get_queried_object_id(),
+		'ga_author_historical_views',
+		$historical_readers_report_array
+	);
 }
 
 function sort_by_year_and_month( $results_array ) {
-    $sorted_array = array();
-    foreach ( $results_array as $result ) {
-        if ( ! array_key_exists( $result['year'] . '-' . $result['month'], $sorted_array ) ) {
-            $sorted_array[ $result['year'] . '-' . $result['month'] ] = $result['views'];
-        } else {
-            $sorted_array[ $result['year'] . '-' . $result['month'] ] += $result['views'];
-        }
-    }
-    ksort( $sorted_array );
-    return $sorted_array;
+	$sorted_array = array();
+	foreach ( $results_array as $result ) {
+		if ( ! array_key_exists( $result['year'] . '-' . $result['month'], $sorted_array ) ) {
+			$sorted_array[ $result['year'] . '-' . $result['month'] ] = $result['views'];
+		} else {
+			$sorted_array[ $result['year'] . '-' . $result['month'] ] += $result['views'];
+		}
+	}
+	ksort( $sorted_array );
+	return $sorted_array;
 }
 
 
@@ -585,5 +590,6 @@ function store_cron_page_views( $response ) {
 
 		update_post_meta( $post_id, 'autd_ga_page_views_post', $page_views );
 		update_post_meta( $post_id, 'autd_total_views_last_update', $now_timestamp );
+		update_post_meta( $post_id, 'autd_total_views', $page_views['total_views'] );
 	}
 }
