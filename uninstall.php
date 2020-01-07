@@ -26,5 +26,5 @@ foreach ( $options as $option ) {
 	}
 }
 
-// Delete pageViews table from postmeta.
-$wpdb->query( "DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE '%autd_page_views%';" );
+// Delete autd_total_views table from postmeta.
+$wpdb->query( "DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE '%autd_total_views%';" );
